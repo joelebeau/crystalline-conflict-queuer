@@ -14,6 +14,19 @@ LOOP_WAIT_PERIOD_SECONDS=${LOOP_WAIT_PERIOD_SECONDS:=300}
 # Default: 5s
 INITIAL_COUNTDOWN_DELAY_SECONDS=${INITIAL_COUNTDOWN_DELAY_SECONDS:=5}
 
+# NOTIFICATION METHOD
+# How does the timer do its countdown?
+# One of: "discord_bot", "terminal"
+#
+# Default: "terminal"
+NOTIFICATION_METHOD=${NOTIFICATION_METHOD:="terminal"}
+
+# DISCORD_BOT_WEBHOOK_URL
+# Webhook URL for your Discord bot. If NOTIFICATION is set to "discord_bot"
+# without setting this option, the script will fail to execute.
+#
+# Default: undefined
+
 # Main script loop
 function main() {
   echo "Waiting $INITIAL_COUNTDOWN_DELAY_SECONDS seconds before starting..."
@@ -30,13 +43,28 @@ function main() {
 
 function do_countdown() {
   case "$NOTIFICATION_METHOD" in
-    "bot")  _do_countdown__bot;;
-    *)      _do_countdown__echo;;
+    "discord_bot")  _do_countdown__discord_bot;;
+    "terminal")     _do_countdown__terminal;;
   esac
 }
 
-function _do_countdown__bot() {
-  echo "Not yet implemented"
+function _do_countdown__discord_bot() {
+  let timer=5
+
+  until [ $timer -lt 0 ]; do
+    local timer_expression
+
+    if [ $timer -gt 0 ]; then
+      timer_expression="$timer"
+    else
+      timer_expression="GO!"
+    fi
+
+    curl -XPOST -H "Content-Type: application/json" -d "{\"content\":\"Countdown: $timer_expression\"}" "$DISCORD_BOT_WEBHOOK_URL"
+
+    let timer=$timer-1
+    sleep 1
+  done
 }
 
 function _do_countdown__echo() {
@@ -56,6 +84,5 @@ function _do_countdown__echo() {
     sleep 1
   done
 }
-
 
 main
