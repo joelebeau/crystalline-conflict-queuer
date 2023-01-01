@@ -5,10 +5,20 @@ necessarily having to coordinate a party. Configure this to run on a schedule of
 and have people queue up when the script tells them to! Then you can ensure you'll be able to play
 with your friends more often, which always makes CC more fun.
 
-## Configuration Options
-Configuration is managed through environment variables. The options that can be controlled are as follows:
+What began as a somewhat clear idea of a server-driven queue timer to sync up players has (quickly) turned into a
+collection of utilities to do that in a few different ways. I may split this out at some point into different
+projects, but I've tried to break up the different methodologies in here to some degree.
 
-  1. LOOP_WAIT_PERIOD_SECONDS (default: 360) - This is the interval from the end of a countdown until the
-       start of the next countdown.
-  2. INITIAL_COUNTDOWN_DELAY_SECONDS (default: 5) - Specifies the delay period before the script starts the
-       initial countdown. This is to give the person setting up the script enough time to get back in game.
+## Methods
+### Web Client Only
+This is my preferred method, as one can easily tie directly into a tool like ACT to get a 
+
+### Web Client + WebSocket
+This option includes a similar web client as the web client only version
+
+### Terminal / Discord Webhook
+The original proof of concept script I slapped together when I first started thinking about this problem.
+Allows for a handful of configuration options to either run a timer that outputs a countdown on a set interval.
+This can be used to tie into any number of other notification methods with some tweaking. This script also includes
+configuration options to send the output to a Discord webhook instead, though this will become spammy very fast.
+
