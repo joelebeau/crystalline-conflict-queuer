@@ -11,7 +11,8 @@ projects, but I've tried to break up the different methodologies in here to some
 
 ## Methods
 ### Web Client Only
-This is my preferred method, as one can easily tie directly into a tool like ACT to get a 
+This is my preferred method, as one can easily tie directly into a tool like ACT to get a countdown timer that should
+work well enough so long as everyone's clocks are somewhat synced?
 
 ### Web Client + WebSocket
 This option includes a similar web client as the web client only version
